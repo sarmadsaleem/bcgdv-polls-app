@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, CardTitle, Badge, Form, FormGroup, Input, Label, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { castVote } from 'api/Polls/'
 
 const cardStyles = {
   boxShadow: '0 0 10px rgba(0,0,0,0.1)',
@@ -34,6 +35,29 @@ const statsStyles = {
   fontSize: '0.9rem'
 }
 class QuestionDetails extends Component {
+  state = {
+    selectedOption: '',
+    isSubmitted: false,
+    timestamp: Date.now()
+  }
+
+  handleChange(event) {
+    this.setState({ selectedOption: event.target.value })
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault()
+    const questionId = parseInt(this.props.data.questionDetails.id, 10)
+    const choice = this.state.selectedOption
+    if (questionId && choice) {
+      this.setState({
+        isSubmitted: true
+      })
+      const response = await castVote(questionId, choice)
+      this.props.sendData(true)
+    }
+  }
+
   render() {
     const questionDetails = this.props.data.questionDetails
     return (
@@ -41,7 +65,7 @@ class QuestionDetails extends Component {
         <div style={indexStyles}># {questionDetails.id}</div>
         <CardTitle style={titleStyles}>{questionDetails.question}</CardTitle>
 
-        <Form>
+        <Form onSubmit={this.handleSubmit.bind(this)}>
           <FormGroup tag="fieldset">
             {questionDetails.choices &&
               questionDetails.choices.map((c, index) => (
@@ -51,7 +75,7 @@ class QuestionDetails extends Component {
                       type="radio"
                       name="choices"
                       value={c.id}
-                      onChange={this.handleChange}
+                      onChange={this.handleChange.bind(this)}
                       required
                     />
                     {c.choice}
@@ -63,6 +87,14 @@ class QuestionDetails extends Component {
                 </FormGroup>
               ))}
           </FormGroup>
+          <Button
+            type="submit"
+            color="primary"
+            className="mb-3"
+            disabled={this.state.isSubmitted ? true : false}
+          >
+            {this.state.isSubmitted ? 'Submitted' : 'Submit'}
+          </Button>
         </Form>
 
         <div>

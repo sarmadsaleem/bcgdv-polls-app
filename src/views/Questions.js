@@ -11,14 +11,21 @@ const buttonStyles = {
 }
 
 class Questions extends Component {
-  state = {
-    questionDetails: {},
-    prev: false,
-    current: false,
-    next: false,
-    refresh: false,
-    totalQuestions: 0,
-    isLoading: true
+  constructor(props) {
+    super(props)
+    this.state = {
+      questionDetails: {},
+      prev: false,
+      current: false,
+      next: false,
+      refresh: false,
+      totalQuestions: 0,
+      isLoading: true
+    }
+  }
+
+  async getData(val, state = this.state) {
+    await this.initializeState()
   }
 
   async navHandler(e) {
@@ -81,7 +88,11 @@ class Questions extends Component {
         </Row>
 
         <Row className={this.state.isLoading && `d-none`}>
-          <QuestionDetails key={this.props.match.params.id} data={this.state} />
+          <QuestionDetails
+            key={this.props.match.params.id}
+            data={this.state}
+            sendData={this.getData.bind(this)}
+          />
         </Row>
 
         <Row>
