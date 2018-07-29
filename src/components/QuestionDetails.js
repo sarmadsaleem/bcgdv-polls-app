@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Card, CardTitle, Badge, Form, FormGroup, Input, Label, Button } from 'reactstrap'
-import { Link } from 'react-router-dom'
 import { castVote } from 'api/Polls/'
 
 const cardStyles = {
@@ -54,7 +53,9 @@ class QuestionDetails extends Component {
         isSubmitted: true
       })
       const response = await castVote(questionId, choice)
-      this.props.sendData(true)
+      if (response) {
+        this.props.sendData(true)
+      }
     }
   }
 
