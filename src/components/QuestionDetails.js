@@ -35,15 +35,16 @@ const statsStyles = {
 }
 class QuestionDetails extends Component {
   render() {
+    const questionDetails = this.props.data.questionDetails
     return (
       <Card body style={cardStyles}>
-        <div style={indexStyles}># {this.props.data.id}</div>
-        <CardTitle style={titleStyles}>{this.props.data.question}</CardTitle>
+        <div style={indexStyles}># {questionDetails.id}</div>
+        <CardTitle style={titleStyles}>{questionDetails.question}</CardTitle>
 
         <Form>
           <FormGroup tag="fieldset">
-            {this.props.data.choices &&
-              this.props.data.choices.map((c, index) => (
+            {questionDetails.choices &&
+              questionDetails.choices.map((c, index) => (
                 <FormGroup check key={index} className="mb-3">
                   <Label check>
                     <Input
@@ -57,7 +58,7 @@ class QuestionDetails extends Component {
                   </Label>
 
                   <Badge className="ml-3 mr-1" color="secondary" style={statsStyles}>
-                    {c.votes} votes - {((c.votes / this.props.data.totalVotes) * 100).toFixed(2)}%
+                    {c.votes} votes - {((c.votes / questionDetails.totalVotes) * 100).toFixed(2)}%
                   </Badge>
                 </FormGroup>
               ))}
@@ -66,7 +67,7 @@ class QuestionDetails extends Component {
 
         <div>
           <small className="muted" style={mutedStyles}>
-            {this.props.data.published_at && new Date(this.props.data.published_at).toDateString()}{' '}
+            {questionDetails.published_at && new Date(questionDetails.published_at).toDateString()}{' '}
           </small>
         </div>
       </Card>
