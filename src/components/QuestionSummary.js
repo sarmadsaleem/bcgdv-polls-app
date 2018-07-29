@@ -38,12 +38,10 @@ class QuestionSummary extends Component {
   render() {
     return (
       <Card body style={cardStyles}>
-        <div style={indexStyles}># {this.props.data.id}</div>
-        <CardTitle style={titleStyles}>
-          <Link to={`/question/${this.props.data.id}`} style={titleStyles}>
-            {this.props.data.question}
-          </Link>
-        </CardTitle>
+        <Link to={`/question/${this.props.data.id}`} style={titleStyles}>
+          <div style={indexStyles}># {this.props.data.id}</div>
+          <CardTitle style={titleStyles}>{this.props.data.question}</CardTitle>
+        </Link>
 
         <div className="mt-2 mb-3">
           <Badge style={choicesBadgeStyles} color="secondary">
